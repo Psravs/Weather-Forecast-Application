@@ -1,20 +1,28 @@
+// Weather API key 
 const apiKey = "a2ae961cb178870ab26416f5ba58ed0c";
 
+// Search Location Button 
 const searchBtn = document.getElementById("searchBtn");
 
+// Current Location Button
 const locationBtn = document.getElementById("locationBtn");
 
+// Recently searched locations displayed
 const dropdown = document.getElementById("recentCities");
 
+// An event is added on click of Search button 
+// trim() - removes white spaces 
 searchBtn.addEventListener("click", () => {
     const city = document.getElementById("cityInput").value.trim();
     clearError();
 
+    // Error handling by displaying an error message
     if (!city) {
         showError("Please enter a valid city name!");
         return;
     }
 
+    // fetching and displaying weather data from OpenWeather using the API key for the searched location 
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}
     `)
     .then(response => response.json())
@@ -27,20 +35,22 @@ searchBtn.addEventListener("click", () => {
         saveCity(city);
         fetchForecast(city);
     })
-    .catch(error => {
+    .catch(error => {  // Error handling
         console.error("Fetch error:", error);
         showError("Something went wrong while fetching data.");
     });
 });
 
+//  An event is added on click of Current Location button 
 locationBtn.addEventListener("click", () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-    } else {
+    } else {  // Error handling
         showError("Geolocation is not supported by your browser.");
     }
 });
 
+// fetching and displaying weather data from OpenWeather using the API key for the current location
 function successCallback(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
@@ -51,13 +61,13 @@ function successCallback(position) {
         displayWeather(data);
         fetchForecast(data.name);
     })
-    .catch(error => {
+    .catch(error => {  // Error handling
         console.error("Location fetch error:", error);
         showError("Failed to fetch weather for your location.");
     });
 }
 
-function errorCallback(error) {
+function errorCallback(error) {  // Error handling
     let msg = "Unable to retrieve your location.";
     if (error.code === 1) msg = "Location access    denied.";
     else if (error.code === 2) msg = "Location    unavailable.";
@@ -65,6 +75,7 @@ function errorCallback(error) {
     showError(msg);
 }
 
+// Displaying weather data fetched - Temperature, humidity, wind speed
 function displayWeather(data) {
     const iconCode = data.weather[0].icon;
     const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`; 
@@ -76,17 +87,19 @@ function displayWeather(data) {
     `<i class="fa-solid fa-wind"></i> Wind Speed: ${data.wind.speed} m/s`;
 }
 
+// fetching forecast data 
 function fetchForecast(city) {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`)
     .then(response => response.json())
     .then(data => {
         displayForecast(data);
     })
-    .catch(err => {
+    .catch(err => {  // Error handling
         console.error("Forecast error:", err);
     });
 }
 
+// displaying forecasted data 
 function displayForecast(data) {
     const forecastContainer = document.getElementById("forecastCards");
     forecastContainer.innerHTML = "";
@@ -105,6 +118,7 @@ function displayForecast(data) {
         const card = document.createElement("div");
         card.className = "bg-blue-100 p-3 rounded shadow text-sm sm:text-base";
 
+        // Weather icons for forecast display 
         const iconCode = entry.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
         const date = new Date(entry.dt_txt);
@@ -121,6 +135,7 @@ function displayForecast(data) {
     });
 }
 
+// saving previously searched locations using localStorage
 function saveCity(city) {
     let cities = JSON.parse(localStorage.getItem("recentCities")) || [];
     if (!cities.includes(city)) {
@@ -132,6 +147,7 @@ function saveCity(city) {
     
 }
     
+// displaying previously searched locations - Recently Searched 
 function loadCities() {
     const dropdown = document.getElementById("recentCities");
     dropdown.innerHTML = `<option value="">-- Recently Searched --</option>`;
@@ -145,6 +161,7 @@ function loadCities() {
     });
 }
 
+// Adding previously searched locations to the Recently Searched dropdown 
 dropdown.addEventListener("change", () => {
     const selectedCity = dropdown.value;
     if (selectedCity) {
@@ -153,15 +170,16 @@ dropdown.addEventListener("change", () => {
     }
 });
 
-function showError(message) {
+function showError(message) {  // Error handling
     const errorMsg = document.getElementById("errorMsg");
     errorMsg.textContent = message;
 }
 
-function clearError() {
+function clearError() { // Error message is cleared when correct input is given 
     document.getElementById("errorMsg").textContent = "";
 }
 
+// waits for the HTML code to be completely loaded for Js interaction 
 document.addEventListener("DOMContentLoaded", () => {
     loadCities();
 });
