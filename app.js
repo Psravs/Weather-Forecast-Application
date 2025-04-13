@@ -1,6 +1,3 @@
-// Weather API key 
-const apiKey = "a2ae961cb178870ab26416f5ba58ed0c";
-
 // Search Location Button 
 const searchBtn = document.getElementById("searchBtn");
 
