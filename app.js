@@ -7,13 +7,12 @@ const locationBtn = document.getElementById("locationBtn");
 // Recently searched locations displayed
 const dropdown = document.getElementById("recentCities");
 
-// An event is added on click of Search button 
 // trim() - removes white spaces 
 searchBtn.addEventListener("click", () => {
     const city = document.getElementById("cityInput").value.trim();
     clearError();
 
-    // Error handling by displaying an error message
+    // Error handling
     if (!city) {
         showError("Please enter a valid city name!");
         return;
@@ -38,12 +37,11 @@ searchBtn.addEventListener("click", () => {
     });
 });
 
-//  An event is added on click of Current Location button 
 locationBtn.addEventListener("click", () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
     } else {  // Error handling
-        showError("Geolocation is not supported by your browser.");
+        showError("Your browser does not support geolocation.");
     }
 });
 
@@ -60,7 +58,7 @@ function successCallback(position) {
     })
     .catch(error => {  // Error handling
         console.error("Location fetch error:", error);
-        showError("Failed to fetch weather for your location.");
+        showError("Fetching of weather data for your location was unsuccessful.");
     });
 }
 
