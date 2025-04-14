@@ -12,23 +12,23 @@ This is a Weather Forecast Application created using HTML, Tailwind CSS, JavaScr
 
 * 5 Day weather forecast 
 
-### Usage 
+## Usage 
 
 1. By location name 
 
-  * Enter Location name 
+  *   Enter Location name 
 
-  * Click on "Search" button
+  *   Click on "Search" button
 
-  * Get the current weather and 5 Day forecast
+  *   Get the current weather and 5 Day forecast
 
 2. By Current Location 
 
-  * Click on "Use My Location" button
+  *   Click on "Use My Location" button
 
-  * Allow the geolocation permission
+  *   Allow the geolocation permission
 
-  * Get the current weather and 5 Day forecast
+  *   Get the current weather and 5 Day forecast
 
 This project provides weather forecast in a simple UI by fetching weather data from an external Weather API, based on the searched location or the user's currrent location. It provides current and 5 Day forecast. 
 Recently searched locations can be stored through user's localStorage (up to 5 locations can be stored). 
